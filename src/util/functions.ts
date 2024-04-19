@@ -20,6 +20,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import api from 'axios';
+import { Whatsapp } from '@wppconnect-team/wppconnect';
 import Crypto from 'crypto';
 import { Request } from 'express';
 import fs from 'fs';
@@ -367,3 +368,38 @@ export function createCatalogLink(session: any) {
   const [wid] = session.split('@');
   return `https://wa.me/c/${wid}`;
 }
+
+const tryType = async (
+  action: 'start' | 'stop',
+  client: Whatsapp,
+  contato: string
+) => {
+  try {
+    if (action === 'start') await client.startTyping(contato);
+    if (action === 'stop') await client.stopTyping(contato);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const sendMessageWithTyping = async (
+  req: Request,
+  { contato, message, options, randomTime = 0 }
+) => {
+  await tryType('start', req.client, contato);
+
+  const randomVal = randomTime || Math.floor(Math.random() * (15 - 5)) + 5;
+  await new Promise((resolve) =>
+    setTimeout(() => resolve(true), randomVal * 1000)
+  );
+
+  if (message.match(/https?:\/\/[^\s/$.?#].[^\s]*/gi))
+    options.linkPreview = false;
+
+  const response = await req.client.sendText(contato, message, options);
+
+  await tryType('stop', req.client, contato);
+  return response;
+};

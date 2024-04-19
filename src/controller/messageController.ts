@@ -16,7 +16,7 @@
 
 import { Request, Response } from 'express';
 
-import { unlinkAsync } from '../util/functions';
+import { sendMessageWithTyping, unlinkAsync } from '../util/functions';
 
 function returnError(req: Request, res: Response, error: any) {
   req.logger.error(error);
@@ -76,14 +76,22 @@ export async function sendMessage(req: Request, res: Response) {
       }
      }
    */
-  const { phone, message } = req.body;
+  const { phone, message, randomTime } = req.body;
 
   const options = req.body.options || {};
 
   try {
     const results: any = [];
     for (const contato of phone) {
-      results.push(await req.client.sendText(contato, message, options));
+      // results.push(await req.client.sendText(contato, message, options));
+      results.push(
+        await sendMessageWithTyping(req, {
+          contato,
+          message,
+          options,
+          randomTime,
+        })
+      );
     }
 
     if (results.length === 0)

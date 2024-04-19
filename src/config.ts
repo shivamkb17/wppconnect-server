@@ -29,8 +29,10 @@ export default {
     uploadS3: false,
   },
   chatwoot: {
+    baseURL: 'https://connect.wizzyweb.com/',
     sendQrCode: true,
     sendStatus: true,
+    token: '54L1yjtYUUcxGZe9DaDfPhV2',
   },
   archive: {
     enable: false,

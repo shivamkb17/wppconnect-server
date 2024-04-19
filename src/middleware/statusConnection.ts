@@ -62,7 +62,7 @@ export default async function statusConnection(
       return res.status(404).json({
         response: null,
         status: 'Disconnected',
-        message: 'A sessão do WhatsApp não está ativa.',
+        message: 'WhatsApp session is not active.',
       });
     }
     next();
@@ -71,7 +71,7 @@ export default async function statusConnection(
     return res.status(404).json({
       response: null,
       status: 'Disconnected',
-      message: 'A sessão do WhatsApp não está ativa.',
+      message: 'WhatsApp session is not active.',
     });
   }
 }

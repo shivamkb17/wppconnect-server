@@ -22,6 +22,7 @@ export interface ServerOptions {
     onReactionMessage: boolean;
     onPollResponse: boolean;
     onRevokedMessage: boolean;
+    onHistoryMessage: boolean;
     onSelfMessage: boolean;
     ignore: string[];
   };
